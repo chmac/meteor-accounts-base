@@ -519,6 +519,11 @@ Accounts.updateOrCreateUserFromExternalService = function(
     selector[serviceIdKey] = serviceData.id;
   }
 
+  // Hack in the current user's _id if logged in. See pull #1845
+  if (Meteor.userId()) {
+    selector = {_id: Meteor.userId()};
+  }
+
   var user = Meteor.users.findOne(selector);
 
   if (user) {
